@@ -1,0 +1,160 @@
+{
+    "materii": [
+        {
+            "nume": "Arhitectura calculatoarelor şi sistemelor de operare",
+            "cod": 1,
+            "an": 1,
+            "este_optionala": 0
+        },
+        {
+            "nume": "Matematică - Calcul diferențial și integral",
+            "cod": 2,
+            "an": 1,
+            "este_optionala": 0
+        },
+        {
+            "nume": "Structuri de date",
+            "cod": 3,
+            "an": 1,
+            "este_optionala": 0
+        },
+        {
+            "nume": "Logică pentru informatică",
+            "cod": 4,
+            "an": 1,
+            "este_optionala": 0
+        },
+        {
+            "nume": "Introducere în programare",
+            "cod": 5,
+            "an": 1,
+            "este_optionala": 0
+        },
+        {
+            "nume": "Algoritmica grafurilor",
+            "cod": 6,
+            "an": 2,
+            "este_optionala": 0
+        },
+        {
+            "nume": "Limba Engleză III",
+            "cod": 7,
+            "an": 2,
+            "este_optionala": 0
+        },
+        {
+            "nume": "Baze de date",
+            "cod": 8,
+            "an": 2,
+            "este_optionala": 0
+        },
+        {
+            "nume": "Algoritmi genetici",
+            "cod": 9,
+            "an": 2,
+            "este_optionala": 1
+        },
+        {
+            "nume": "Principii ale limbajelor de programare",
+            "cod": 10,
+            "an": 2,
+            "este_optionala": 1
+        },
+        {
+            "nume": "Reţele de calculatoare",
+            "cod": 11,
+            "an": 2,
+            "este_optionala": 0
+        },
+        {
+            "nume": "Limbaje formale, automate si compilatoare",
+            "cod": 12,
+            "an": 2,
+            "este_optionala": 0
+        },
+        {
+            "nume": "Calcul cuantic",
+            "cod": 13,
+            "an": 2,
+            "este_optionala": 1
+        },
+        {
+            "nume": "Calculabilitate, decidabilitate si complexitate",
+            "cod": 14,
+            "an": 2,
+            "este_optionala": 1
+        },
+        {
+            "nume": "Programare Rust",
+            "cod": 15,
+            "an": 2,
+            "este_optionala": 1
+        },
+        {
+            "nume": "Animatie 3D: algoritmi si tehnici fundamentale",
+            "cod": 16,
+            "an": 3,
+            "este_optionala": 1
+        },
+        {
+            "nume": "Introducere în .NET",
+            "cod": 17,
+            "an": 3,
+            "este_optionala": 1
+        },
+        {
+            "nume": "Rețele neuronale",
+            "cod": 18,
+            "an": 3,
+            "este_optionala": 1
+        },
+        {
+            "nume": "Programare în Python",
+            "cod": 19,
+            "an": 3,
+            "este_optionala": 0
+        },
+        {
+            "nume": "Inteligenţă artificială",
+            "cod": 20,
+            "an": 3,
+            "este_optionala": 0
+        },
+        {
+            "nume": "Tehnici de programare multiprocesor",
+            "cod": 21,
+            "an": 3,
+            "este_optionala": 1
+        },
+        {
+            "nume": "Învățare automată",
+            "cod": 22,
+            "an": 3,
+            "este_optionala": 0
+        },
+        {
+            "nume": "Dezvoltare de programe bazată pe verificare",
+            "cod": 23,
+            "an": 3,
+            "este_optionala": 1
+        },
+        {
+            "nume": "Capitole speciale de sisteme de operare",
+            "cod": 24,
+            "an": 3,
+            "este_optionala": 1
+        },
+        {
+            "nume": "Dezvoltarea sistemelor fizice utilizând microprocesoare",
+            "cod": 25,
+            "an": 3,
+            "este_optionala": 1
+        },
+        {
+            "nume": "Securitatea informaţiei",
+            "cod": 26,
+            "an": 3,
+            "este_optionala": 0
+        }
+    ]
+}
