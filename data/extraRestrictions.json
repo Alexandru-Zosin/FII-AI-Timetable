@@ -1,0 +1,10 @@
+{
+    "extraRestricitions": [
+        {
+            "restrictionPrompt": "profesor == 6 && tip == 'seminar'",
+            "restrictionType": "hard",
+            "restrictionMustRunOn": "row"
+        }
+    ]
+}
+// restrictie hard de adaugat -> toti profesorii sa aiba un minim de ore 
