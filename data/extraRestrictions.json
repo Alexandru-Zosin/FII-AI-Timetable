@@ -1,10 +1,26 @@
 {
     "extraRestricitions": [
         {
-            "restrictionPrompt": "profesor == 6 && tip == 'seminar'",
-            "restrictionType": "hard",
-            "restrictionMustRunOn": "row"
+            "tip": 1,
+            "restrangeOrar": true
+        },
+        {
+            "tip": 2,
+            "profId": 2,
+            "intervalTimpPreferat": [4, 5, 6]
+        },
+        {
+            "tip": 3,
+            "profId": 3,
+            "intervalTimpImposibil": [7, 8, 9]
+        },
+        {
+            "tip": 4,
+            "respectaNrMaxOreProf": true
+        },
+        {
+            "tip": 5,
+            "respectaIntervaleSala": true
         }
     ]
 }
-// restrictie hard de adaugat -> toti profesorii sa aiba un minim de ore 
