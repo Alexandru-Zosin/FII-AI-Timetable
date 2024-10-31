@@ -3,7 +3,7 @@
         {
             "cod": 1,
             "numeProfesor": "Lect.dr. Ghirvu Lucian",
-            "materiiPredate": [1],
+            "materiiPredate": [4],
             "nrMaximOre": 2
         },
         {
@@ -27,13 +27,13 @@
         {
             "cod": 5,
             "numeProfesor": "Conf. dr. Gavrilut Dragos",
-            "materiiPredate": [19],
+            "materiiPredate": [15, 19],
             "nrMaximOre": 2
         },
         {
             "cod": 6,
             "numeProfesor": "Prof. dr. Țiplea Ferucio Laurențiu",
-            "materiiPredate": [26],
+            "materiiPredate": [14, 26],
             "nrMaximOre": 2
         },
         {
@@ -87,19 +87,19 @@
         {
             "cod": 15,
             "numeProfesor": "Conf. dr. Zălinescu Adrian",
-            "materiiPredate": [23],
+            "materiiPredate": [2],
             "nrMaximOre": 2
         },
         {
             "cod": 16,
             "numeProfesor": "Asist. dr. Craciun Vlad",
-            "materiiPredate": [25],
+            "materiiPredate": [19, 23],
             "nrMaximOre": 2
         },
         {
             "cod": 17,
             "numeProfesor": "Conf. dr. Ciobâcă Ștefan",
-            "materiiPredate": [23],
+            "materiiPredate": [4, 23],
             "nrMaximOre": 2
         },
         {
@@ -123,7 +123,7 @@
         {
             "cod": 21,
             "numeProfesor": "Asist. dr. Prelipcean Bogdan",
-            "materiiPredate": [26],
+            "materiiPredate": [12, 26],
             "nrMaximOre": 2
         },
         {
@@ -135,13 +135,103 @@
         {
             "cod": 23,
             "numeProfesor": "Lect. dr. Vârlan Cosmin",
-            "materiiPredate": [25],
+            "materiiPredate": [8, 25],
             "nrMaximOre": 2
         },
         {
             "cod": 24,
             "numeProfesor": "Simionescu Cristian",
-            "materiiPredate": [22],
+            "materiiPredate": [18, 22],
+            "nrMaximOre": 2
+        },
+        {
+            "cod": 25,
+            "numeProfesor": "Lect. dr. Captarencu Oana",
+            "materiiPredate": [12],
+            "nrMaximOre": 2
+        },
+        {
+            "cod": 26,
+            "numeProfesor": "Lect. dr. Diac Paul",
+            "materiiPredate": [6, 21],
+            "nrMaximOre": 2
+        },
+        {
+            "cod": 27,
+            "numeProfesor": "Asist. dr. Scutelnicu Andrei",
+            "materiiPredate": [11],
+            "nrMaximOre": 2
+        },
+        {
+            "cod": 28,
+            "numeProfesor": "Conf. dr. Panu Andrei",
+            "materiiPredate": [11],
+            "nrMaximOre": 2
+        },
+        {
+            "cod": 29,
+            "numeProfesor": "Conf. dr. Gațu Cristian",
+            "materiiPredate": [3],
+            "nrMaximOre": 2
+        },
+        {
+            "cod": 30,
+            "numeProfesor": "Lect. dr. Rădulescu Vlad",
+            "materiiPredate": [1],
+            "nrMaximOre": 2
+        },
+        {
+            "cod": 31,
+            "numeProfesor": "Colab. Leon Daniel",
+            "materiiPredate": [1],
+            "nrMaximOre": 2
+        },
+        {
+            "cod": 32,
+            "numeProfesor": "Lect. dr. Pătruț Bogdan",
+            "materiiPredate": [5],
+            "nrMaximOre": 2
+        },
+        {
+            "cod": 33,
+            "numeProfesor": "Prof. Hadimbu Stelian",
+            "materiiPredate": [5],
+            "nrMaximOre": 2
+        },
+        {
+            "cod": 34,
+            "numeProfesor": "Lect. dr. Onofrei Paula",
+            "materiiPredate": [7],
+            "nrMaximOre": 2
+        },
+        {
+            "cod": 35,
+            "numeProfesor": "Lect. dr. Armanu Nicoleta",
+            "materiiPredate": [7],
+            "nrMaximOre": 2
+        },
+        {
+            "cod": 36,
+            "numeProfesor": "Lect. dr. Croitoru Eugen",
+            "materiiPredate": [9],
+            "nrMaximOre": 2
+        },
+        {
+            "cod": 37,
+            "numeProfesor": "Prof. dr. Luchian Henri",
+            "materiiPredate": [9],
+            "nrMaximOre": 2
+        },
+        {
+            "cod": 38,
+            "numeProfesor": "Conf. dr. Arusoaie Andrei",
+            "materiiPredate": [10],
+            "nrMaximOre": 2
+        },
+        {
+            "cod": 39,
+            "numeProfesor": "Conf. dr. Arusoaie Andreea-Valentina",
+            "materiiPredate": [13],
             "nrMaximOre": 2
         }
     ]
