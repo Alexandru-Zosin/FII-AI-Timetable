@@ -1,154 +1,62 @@
-{
-    "timpi": [
-        {
-            "zi": "luni",
-            "ora": "08:00",
-            "cod": 1
-        },
-        {
-            "zi": "luni",
-            "ora": "10:00",
-            "cod": 2
-        },
-        {
-            "zi": "luni",
-            "ora": "12:00",
-            "cod": 3
-        },
-        {
-            "zi": "luni",
-            "ora": "14:00",
-            "cod": 4
-        },
-        {
-            "zi": "luni",
-            "ora": "16:00",
-            "cod": 5
-        },
-        {
-            "zi": "luni",
-            "ora": "18:00",
-            "cod": 6
-        },
-        {
-            "zi": "marti",
-            "ora": "08:00",
-            "cod": 7
-        },
-        {
-            "zi": "marti",
-            "ora": "10:00",
-            "cod": 8
-        },
-        {
-            "zi": "marti",
-            "ora": "12:00",
-            "cod": 9
-        },
-        {
-            "zi": "marti",
-            "ora": "14:00",
-            "cod": 10
-        },
-        {
-            "zi": "marti",
-            "ora": "16:00",
-            "cod": 11
-        },
-        {
-            "zi": "marti",
-            "ora": "18:00",
-            "cod": 12
-        },
-        {
-            "zi": "miercuri",
-            "ora": "08:00",
-            "cod": 13
-        },
-        {
-            "zi": "miercuri",
-            "ora": "10:00",
-            "cod": 14
-        },
-        {
-            "zi": "miercuri",
-            "ora": "12:00",
-            "cod": 15
-        },
-        {
-            "zi": "miercuri",
-            "ora": "14:00",
-            "cod": 16
-        },
-        {
-            "zi": "miercuri",
-            "ora": "16:00",
-            "cod": 17
-        },
-        {
-            "zi": "miercuri",
-            "ora": "18:00",
-            "cod": 18
-        },
-        {
-            "zi": "joi",
-            "ora": "08:00",
-            "cod": 19
-        },
-        {
-            "zi": "joi",
-            "ora": "10:00",
-            "cod": 20
-        },
-        {
-            "zi": "joi",
-            "ora": "12:00",
-            "cod": 21
-        },
-        {
-            "zi": "joi",
-            "ora": "14:00",
-            "cod": 22
-        },
-        {
-            "zi": "joi",
-            "ora": "16:00",
-            "cod": 23
-        },
-        {
-            "zi": "joi",
-            "ora": "18:00",
-            "cod": 24
-        },
-        {
-            "zi": "vineri",
-            "ora": "08:00",
-            "cod": 25
-        },
-        {
-            "zi": "vineri",
-            "ora": "10:00",
-            "cod": 26
-        },
-        {
-            "zi": "vineri",
-            "ora": "12:00",
-            "cod": 27
-        },
-        {
-            "zi": "vineri",
-            "ora": "14:00",
-            "cod": 28
-        },
-        {
-            "zi": "vineri",
-            "ora": "16:00",
-            "cod": 29
-        },
-        {
-            "zi": "vineri",
-            "ora": "18:00",
-            "cod": 30
-        }
-    ]
-}
+[
+    {
+        "zi": "luni",
+        "ora": "08:00",
+        "cod": 1
+    },
+    {
+        "zi": "luni",
+        "ora": "10:00",
+        "cod": 2
+    },
+    {
+        "zi": "luni",
+        "ora": "12:00",
+        "cod": 3
+    },
+    {
+        "zi": "luni",
+        "ora": "14:00",
+        "cod": 4
+    },
+    {
+        "zi": "luni",
+        "ora": "16:00",
+        "cod": 5
+    },
+    {
+        "zi": "luni",
+        "ora": "18:00",
+        "cod": 6
+    },
+    {
+        "zi": "marti",
+        "ora": "08:00",
+        "cod": 7
+    },
+    {
+        "zi": "marti",
+        "ora": "10:00",
+        "cod": 8
+    },
+    {
+        "zi": "marti",
+        "ora": "12:00",
+        "cod": 9
+    },
+    {
+        "zi": "marti",
+        "ora": "14:00",
+        "cod": 10
+    },
+    {
+        "zi": "marti",
+        "ora": "16:00",
+        "cod": 11
+    },
+    {
+        "zi": "marti",
+        "ora": "18:00",
+        "cod": 12
+    }
+]

@@ -1,81 +1,92 @@
-{
-    "semiani": [
-        {
-            "nume": "A",
-            "limba": "romana",
-            "cod": 1
-        },
-        {
-            "nume": "B",
-            "limba": "romana",
-            "cod": 2
-        },
-        {
-            "nume": "E",
-            "limba": "engleza",
-            "cod": 3
-        }
-    ],
-    "grupe": [
-        {
-            "nume": "A1",
-            "limba": "romana",
-            "cod": 101
-        },  
-        {
-            "nume": "A2",
-            "limba": "romana",
-            "cod": 102
-        },
-        {
-            "nume": "A3",
-            "limba": "romana",
-            "cod": 103
-        },
-        {
-            "nume": "A4",
-            "limba": "romana",
-            "cod": 104
-        },
-        {
-            "nume": "A5",
-            "limba": "romana",
-            "cod": 105
-        },
-        {
-            "nume": "B1",
-            "limba": "romana",
-            "cod": 201
-        },
-        {
-            "nume": "B2",
-            "limba": "romana",
-            "cod": 202
-        },
-        {
-            "nume": "B3",
-            "limba": "romana",
-            "cod": 203
-        },
-        {
-            "nume": "B4",
-            "limba": "romana",
-            "cod": 204
-        },
-        {
-            "nume": "E1",
-            "limba": "engleza",
-            "cod": 301
-        },
-        {
-            "nume": "E2",
-            "limba": "engleza",
-            "cod": 302
-        },
-        {
-            "nume": "E3",
-            "limba": "engleza",
-            "cod": 303
-        }
-    ]
-}
+[
+    {
+        "nume": "A",
+        "limba": "romana",
+        "cod": 1,
+        "an": 3
+    },
+    {
+        "nume": "B",
+        "limba": "romana",
+        "cod": 2,
+        "an": 3
+    },
+    {
+        "nume": "E",
+        "limba": "engleza",
+        "cod": 3,
+        "an": 3
+    },
+    {
+        "nume": "A1",
+        "limba": "romana",
+        "cod": 101,
+        "an": 3
+    },
+    {
+        "nume": "A2",
+        "limba": "romana",
+        "cod": 102,
+        "an": 3
+    },
+    {
+        "nume": "A3",
+        "limba": "romana",
+        "cod": 103,
+        "an": 3
+    },
+    {
+        "nume": "A4",
+        "limba": "romana",
+        "cod": 104,
+        "an": 3
+    },
+    {
+        "nume": "A5",
+        "limba": "romana",
+        "cod": 105,
+        "an": 3
+    },
+    {
+        "nume": "B1",
+        "limba": "romana",
+        "cod": 201,
+        "an": 3
+    },
+    {
+        "nume": "B2",
+        "limba": "romana",
+        "cod": 202,
+        "an": 3
+    },
+    {
+        "nume": "B3",
+        "limba": "romana",
+        "cod": 203,
+        "an": 3
+    },
+    {
+        "nume": "B4",
+        "limba": "romana",
+        "cod": 204,
+        "an": 3
+    },
+    {
+        "nume": "E1",
+        "limba": "engleza",
+        "cod": 301,
+        "an": 3
+    },
+    {
+        "nume": "E2",
+        "limba": "engleza",
+        "cod": 302,
+        "an": 3
+    },
+    {
+        "nume": "E3",
+        "limba": "engleza",
+        "cod": 303,
+        "an": 3
+    }
+]
