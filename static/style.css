@@ -1,0 +1,28 @@
+/* style.css */
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.table {
+    width: 100%;
+    margin: auto;
+    text-align: center;
+}
+
+th {
+    background-color: #a1c4fd;
+    color: #333;
+    text-align: center;
+}
+
+td {
+    color: #444;
+    text-align: center;
+}
