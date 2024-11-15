@@ -31,7 +31,7 @@ def f1(currentTimetable):
     return True  # Handled during assignment
 
 def f2(currentTimetable):
-    # Each group has assigned all mandatory subjects for their year
+    # Each group has assigned all mandatory subjects
     group_subjects = {}
     for profesorIndex in currentTimetable:
         for timeIndex in currentTimetable[profesorIndex]:
@@ -40,10 +40,7 @@ def f2(currentTimetable):
                 group_subjects[grupa] = set()
             group_subjects[grupa].add(materie)
     for grupa in group_codes:
-        grupa_info = group_codes[grupa]
-        grupa_an = grupa_info['an']
-        required_subjects = [subject['cod'] for subject in loadedData['materii']
-                             if subject['este_optionala'] == 0 and subject['an'] == grupa_an]
+        required_subjects = [subject['cod'] for subject in loadedData['materii'] if subject['este_optionala'] == 0]
         required_subjects_set = set(required_subjects)
         if grupa not in group_subjects:
             assigned_subjects = set()
@@ -94,12 +91,9 @@ def f5(currentTimetable):
     for profesorIndex in currentTimetable:
         for timeIndex in currentTimetable[profesorIndex]:
             grupa, sala, materie = currentTimetable[profesorIndex][timeIndex]
-            grupa_info = group_codes[grupa]
-            grupa_an = grupa_info['an']
-            subject_year = grupa_an
-            grupa_nume = grupa_info['nume']
+            grupa_nume = group_codes[grupa]['nume']
             is_course = len(grupa_nume) == 1
-            key = (materie, subject_year)
+            key = materie
             if is_course:
                 if key not in subject_course_times:
                     subject_course_times[key] = []
@@ -109,7 +103,6 @@ def f5(currentTimetable):
                     subject_seminar_times[key] = []
                 subject_seminar_times[key].append(timeIndex)
     for key in subject_seminar_times:
-        materie, subject_year = key
         if key in subject_course_times:
             min_course_time = min(subject_course_times[key])
             min_seminar_time = min(subject_seminar_times[key])
@@ -187,12 +180,9 @@ def removeFromTimeTable(profesorIndex, timeIndex):
 class_list = []
 
 for materie in loadedData['materii']:
-    subject_year = materie['an']
     if materie['este_optionala'] == 0:
         # Mandatory subject
         for group in loadedData['grupe']:
-            if group['an'] != subject_year:
-                continue
             group_nume = group['nume']
             if len(group_nume) == 1:
                 # Course group
@@ -210,15 +200,13 @@ for materie in loadedData['materii']:
                 })
     else:
         # Optional subject
-        # Course is for all main groups at once per year
-        main_groups = [group for group in loadedData['grupe'] if group['an'] == subject_year and len(group['nume']) == 1]
+        main_groups = [group for group in loadedData['grupe'] if len(group['nume']) == 1]
         for group in main_groups:
             class_list.append({
                 'type': 'course',
                 'materie': materie['cod'],
                 'grupa': group['cod']
             })
-        # Seminars for each main group
         for group in main_groups:
             class_list.append({
                 'type': 'seminar',
@@ -229,32 +217,26 @@ for materie in loadedData['materii']:
 def backtracking(class_index):
     global bestTimeTable, bestTimeTableScore
     print(class_index)
-    if class_index == len(class_list):
+    if class_index == len(class_list): # base case
         if isTimeTableValid():
-            
             bestTimeTable = copy.deepcopy(currentTimetable)
-            # bestTimeTableScore = timeTableScore
             return 1
-            timeTableScore = calculateTimeTableScoreBasedOnSoftRestrictions()
-            if timeTableScore > bestTimeTableScore:
-                bestTimeTable = copy.deepcopy(currentTimetable)
-                bestTimeTableScore = timeTableScore
         return 0
     cls = class_list[class_index]
     materie = cls['materie']
     grupa = cls['grupa']
     class_type = cls['type']  # 'course' or 'seminar'
     possible_professors = []
-    for profesor in loadedData['profesori']:
+    for profesor in loadedData['profesori']: # iterates over all professors for this materie (this cls)
         if materie in profesor['materiiPredate']:
             profesorIndex = profesor['cod']
             possible_professors.append(profesorIndex)
-    for profesorIndex in possible_professors:
-        for time in loadedData['timp']:
+    for profesorIndex in possible_professors: 
+        for time in loadedData['timp']: # iterates over all possible time slots 
             timeIndex = time['cod']
             profesor = profesor_codes[profesorIndex]
             if timeIndex in currentTimetable.get(profesorIndex, {}):
-                continue
+                continue # check if professor is already busy then in that timeslot
             for sala in loadedData['sali']:
                 salaIndex = sala['cod']
                 is_course = (class_type == 'course')
@@ -265,7 +247,6 @@ def backtracking(class_index):
                 if timeIndex not in sala['timp_posibil']:
                     continue
                 if addToTimeTable(profesorIndex, timeIndex, grupa, salaIndex, materie):
-                    # if isTimeTableValid(): # intermediary check not all check
                     returnValue = backtracking(class_index + 1)
                     if returnValue == 1:
                         return 1
@@ -286,9 +267,8 @@ if bestTimeTable is not None:
             sala_info = sala_codes[sala]
             materie_info = materie_codes[materie]
             grupa_info = group_codes[grupa]
-            grupa_nume = grupa_info['nume'] + " (Anul {})".format(grupa_info['an'])
             print(f"  Time: {time_info['zi']} {time_info['ora']}")
-            print(f"    Group: {grupa_nume}")
+            print(f"    Group: {grupa_info['nume']}")
             print(f"    Room: {sala_info['nume']}")
             print(f"    Subject: {materie_info['nume']}")
 else:
