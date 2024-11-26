@@ -38,8 +38,6 @@ def f1(currentTimetable):
 
 required_subjects = [subject['cod'] for subject in loadedData['materii'] if subject['este_optionala'] == 0]
 required_subjects_set = set(required_subjects)
-optional_subjects = [subject['cod'] for subject in loadedData['materii'] if subject['este_optionala'] == 1]
-optional_subjects_set = set(optional_subjects)
 
 def f2(currentTimetable):
     # Each group has assigned all mandatory subjects
@@ -47,7 +45,7 @@ def f2(currentTimetable):
     group_subjects = {}
     for profesorIndex in currentTimetable:
         for timeIndex in currentTimetable[profesorIndex]:
-            grupa, sala, materie, class_type = currentTimetable[profesorIndex][timeIndex]
+            grupa, sala, materie = currentTimetable[profesorIndex][timeIndex]
             if grupa not in group_subjects:
                 group_subjects[grupa] = set()
             if materie in required_subjects:
@@ -67,7 +65,7 @@ def f3(currentTimetable):
     group_subject_seminar = {}
     for profesorIndex in currentTimetable:
         for timeIndex in currentTimetable[profesorIndex]:
-            grupa, sala, materie, class_type= currentTimetable[profesorIndex][timeIndex]
+            grupa, sala, materie = currentTimetable[profesorIndex][timeIndex]
             grupa_nume = group_codes[grupa]['nume']
             is_course = len(grupa_nume) == 1
             key = (grupa, materie)
@@ -85,7 +83,7 @@ def f4(currentTimetable):
     # Courses can only be held in classrooms with necessary capacity
     for profesorIndex in currentTimetable:
         for timeIndex in currentTimetable[profesorIndex]:
-            grupa, sala, materie, class_type = currentTimetable[profesorIndex][timeIndex]
+            grupa, sala, materie = currentTimetable[profesorIndex][timeIndex]
             sala_info = sala_codes[sala]
             grupa_nume = group_codes[grupa]['nume']
             is_course = len(grupa_nume) == 1
@@ -101,7 +99,7 @@ def f5(currentTimetable):
     subject_seminar_times = {}
     for profesorIndex in currentTimetable:
         for timeIndex in currentTimetable[profesorIndex]:
-            grupa, sala, materie, class_type = currentTimetable[profesorIndex][timeIndex]
+            grupa, sala, materie = currentTimetable[profesorIndex][timeIndex]
             grupa_nume = group_codes[grupa]['nume']
             is_course = len(grupa_nume) == 1
             key = materie
@@ -129,23 +127,13 @@ def f6(currentTimetable):
         profesor = profesor_codes[profesorIndex]
         subjects_assigned = set(profesor['materiiPredate'])
         for timeIndex in currentTimetable[profesorIndex]:
-            grupa, sala, materie, class_type = currentTimetable[profesorIndex][timeIndex]
+            grupa, sala, materie = currentTimetable[profesorIndex][timeIndex]
             if materie not in subjects_assigned:
                 return False
     return True
 
-def f7(currentTimetable):
-    # The course is only assigned to a professor that can teach at a course
-    for profesorIndex in currentTimetable:
-        for timeIndex in currentTimetable[profesorIndex]:
-            grupa, sala, materie, class_type = currentTimetable[profesorIndex][timeIndex]
-            profesor = profesor_codes[profesorIndex]
-            if len(group_codes[grupa]['nume']) == 1 and profesor['poatePredaCurs'] == 0:
-                return False
-    return True
 # restrictions.append(f1)
-# restrictions.append(f2)
-# restrictions.append(f7)
+restrictions.append(f2)
 # restrictions.append(f3) # posibil de scos
 # restrictions.append(f4) # posibil de scos 
 # restrictions.append(f5) # posibil de scos ca nu ne intereseaza
@@ -171,10 +159,17 @@ def calculateTimeTableScoreBasedOnSoftRestrictions():
     # For simplicity, we'll just return a fixed score
     return 1
 
-def addToTimeTable(profesorIndex, timeIndex, grupa, sala, materie, class_type):
-    # we could've checked if the professor can teach the course here
+def addToTimeTable(profesorIndex, timeIndex, grupa, sala, materie):
+    profesor = profesor_codes[profesorIndex]
+    nrMaximOre = profesor['nrMaximOre']
     if profesorIndex not in currentTimetable:
         currentTimetable[profesorIndex] = {}
+    if profesorIndex not in profesor_hours:
+        profesor_hours[profesorIndex] = 0
+    if profesor_hours[profesorIndex] >= nrMaximOre:
+        return False
+    if timeIndex in currentTimetable[profesorIndex]:
+        return False
     # Check group schedule
     if grupa not in group_schedule:
         group_schedule[grupa] = set()
@@ -186,7 +181,7 @@ def addToTimeTable(profesorIndex, timeIndex, grupa, sala, materie, class_type):
     if timeIndex in sala_schedule[sala]:
         return False
     # Assign
-    currentTimetable[profesorIndex][timeIndex] = (grupa, sala, materie, class_type)
+    currentTimetable[profesorIndex][timeIndex] = (grupa, sala, materie)
     profesor_hours[profesorIndex] += 1
     group_schedule[grupa].add(timeIndex)
     sala_schedule[sala].add(timeIndex)
@@ -194,7 +189,7 @@ def addToTimeTable(profesorIndex, timeIndex, grupa, sala, materie, class_type):
 
 def removeFromTimeTable(profesorIndex, timeIndex):
     if profesorIndex in currentTimetable and timeIndex in currentTimetable[profesorIndex]:
-        grupa, sala, materie, class_type = currentTimetable[profesorIndex][timeIndex]
+        grupa, sala, materie = currentTimetable[profesorIndex][timeIndex]
         del currentTimetable[profesorIndex][timeIndex]
         profesor_hours[profesorIndex] -= 1
         group_schedule[grupa].remove(timeIndex)
@@ -238,17 +233,66 @@ for materie in loadedData['materii']:
                 'grupa': group['cod']
             })
 
-# class_list.sort(key=lambda x: x['type'] == 'seminar')
+# def backtracking(class_index):
+#     global bestTimeTable, bestTimeTableScore
+#     print(class_index)
+#     if class_index == len(class_list): # base case
+#         if isTimeTableValid():
+#             bestTimeTable = copy.deepcopy(currentTimetable)
+#             return 1
+#         print('invalidated')
+#         return 0
+#     cls = class_list[class_index]
+#     materie = cls['materie']
+#     grupa = cls['grupa']
+#     class_type = cls['type']  # 'course' or 'seminar'
+#     possible_professors = []
+#     for profesor in loadedData['profesori']: # iterates over all professors for this materie (this cls)
+#         if materie in profesor['materiiPredate']:
+#             profesorIndex = profesor['cod']
+#             possible_professors.append(profesorIndex)
+#     for profesorIndex in possible_professors: 
+#         for time in loadedData['timp']: # iterates over all possible time slots 
+#             timeIndex = time['cod']
+#             profesor = profesor_codes[profesorIndex]
+#             if timeIndex in currentTimetable.get(profesorIndex, {}):
+#                 continue # check if professor is already busy then in that timeslot
+#             for sala in loadedData['sali']:
+#                 salaIndex = sala['cod']
+#                 is_course = (class_type == 'course')
+#                 if is_course and sala['curs_posibil'] != 1:
+#                     continue
+#                 if not is_course and sala['curs_posibil'] != 0:
+#                     continue
+#                 if timeIndex not in sala['timp_posibil']:
+#                     continue
+#                 print(-class_index + len(class_list)) ## here is the line i want to have a bar plot with all the values 
+#                 if addToTimeTable(profesorIndex, timeIndex, grupa, salaIndex, materie):
+#                     if checkRequirementsDuringConstruction() == False:
+#                         removeFromTimeTable(profesorIndex, timeIndex)
+#                         continue
+                        
+#                     returnValue = backtracking(class_index + 1)
+#                     if returnValue == 1:
+#                         return 1
+#                     removeFromTimeTable(profesorIndex, timeIndex)
+
 
 bar_plot_values = []
 
 def backtracking(class_index):
     global bestTimeTable, bestTimeTableScore, bar_plot_values
+    # print(class_index)
+    
+    if len(bar_plot_values) >= 100000:
+        # Stop execution once 10,000 values are collected
+        return 0
 
     if class_index == len(class_list):  # base case
         if isTimeTableValid():
             bestTimeTable = copy.deepcopy(currentTimetable)
             return 1
+        # print('invalidated')
         return 0
 
     cls = class_list[class_index]
@@ -261,21 +305,10 @@ def backtracking(class_index):
         if materie in profesor['materiiPredate']:
             profesorIndex = profesor['cod']
             possible_professors.append(profesorIndex)
+    print(possible_professors, class_index)
     for profesorIndex in possible_professors:
-        # here we check if a professor can teach courses
-        if class_type == 'course' and profesor_codes[profesorIndex]['poatePredaCurs'] == 0:
-            continue
-        profesor = profesor_codes[profesorIndex]
-        nrMaximOre = profesor['nrMaximOre']
-        if profesorIndex not in profesor_hours:
-            profesor_hours[profesorIndex] = 0
-        if profesor_hours[profesorIndex] >= nrMaximOre:
-            continue
         for time in loadedData['timp']:  # iterates over all possible time slots
             timeIndex = time['cod']
-            if timeIndex in group_schedule.get(grupa, {}):
-                continue
-
             profesor = profesor_codes[profesorIndex]
             if timeIndex in currentTimetable.get(profesorIndex, {}):
                 continue  # check if professor is already busy then in that timeslot
@@ -285,17 +318,63 @@ def backtracking(class_index):
                 is_course = (class_type == 'course')
                 if is_course and sala['curs_posibil'] != 1:
                     continue
+                if not is_course and sala['curs_posibil'] != 0:
+                    continue
                 if timeIndex not in sala['timp_posibil']:
                     continue
 
-                if addToTimeTable(profesorIndex, timeIndex, grupa, salaIndex, materie, class_type):
+                value_to_plot = -class_index + len(class_list)
+                bar_plot_values.append(value_to_plot)  # Store the value for plotting
+
+                if len(bar_plot_values) >= 100000:
+                    # Stop execution once 10,000 values are collected
+                    return 0
+
+                if addToTimeTable(profesorIndex, timeIndex, grupa, salaIndex, materie):
+                    # if checkRequirementsDuringConstruction() == False:
+                    #     removeFromTimeTable(profesorIndex, timeIndex)
+                    #     continue
 
                     returnValue = backtracking(class_index + 1)
                     if returnValue == 1:
                         return 1
                     removeFromTimeTable(profesorIndex, timeIndex)
 
+
+
+
+
+# Start the backtracking algorithm
+# backtracking(0)
+# cProfile.run("backtracking(0)", "profile_results.prof")
 backtracking(0)
+
+# plt.figure(figsize=(10, 6))
+# plt.bar(range(len(bar_plot_values)), bar_plot_values)
+# plt.xlabel('Index')
+# plt.ylabel('Value (-class_index + len(class_list))')
+# plt.title('Bar Plot of Collected Values')
+# plt.show()
+
+# Print the best timetable
+# if bestTimeTable is not None:
+#     print("Best timetable found with score:", bestTimeTableScore)
+#     for profesorIndex in bestTimeTable:
+#         profesor = profesor_codes[profesorIndex]
+#         print("Professor:", profesor['numeProfesor'])
+#         for timeIndex in bestTimeTable[profesorIndex]:
+#             grupa, sala, materie = bestTimeTable[profesorIndex][timeIndex]
+#             time_info = time_codes[timeIndex]
+#             sala_info = sala_codes[sala]
+#             materie_info = materie_codes[materie]
+#             grupa_info = group_codes[grupa]
+#             print(f"  Time: {time_info['zi']} {time_info['ora']}")
+#             print(f"    Group: {grupa_info['nume']}")
+#             print(f"    Room: {sala_info['nume']}")
+#             print(f"    Subject: {materie_info['nume']}")
+# else:
+#     print("No valid timetable found.")
+
 
 def transform_data(bestTimeTable, profesor_codes, time_codes, sala_codes, materie_codes, group_codes):
     timetable_data = {}
@@ -304,7 +383,7 @@ def transform_data(bestTimeTable, profesor_codes, time_codes, sala_codes, materi
         profesor = profesor_codes[profesorIndex]["numeProfesor"]
 
         for timeIndex, details in schedule.items():
-            grupa, sala, materie, class_type = details
+            grupa, sala, materie = details
             zi = time_codes[timeIndex]["zi"]
             ora = time_codes[timeIndex]["ora"]
             interval = f"{ora[:2]}-{str(int(ora[:2]) + 2).zfill(2)}"  # ex: 08:00 -> "08-10"
@@ -315,7 +394,7 @@ def transform_data(bestTimeTable, profesor_codes, time_codes, sala_codes, materi
                 "Disciplina": materie_codes[materie]["nume"],
                 "Profesor": profesor,
                 "Sala": sala_codes[sala]["nume"],
-                "Tip": class_type # Poți adapta pentru frecvență dacă există informații suplimentare
+                "Frecvență": ""  # Poți adapta pentru frecvență dacă există informații suplimentare
             }
 
             # Inițializează ziua și grupa în `timetable_data`

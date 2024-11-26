@@ -5,7 +5,7 @@
         "este_optionala": 1
     },
     {
-        "nume": "Introducere în .NET",
+        "nume": "Introducere in .NET",
         "cod": 17,
         "este_optionala": 1
     },
@@ -20,7 +20,7 @@
         "este_optionala": 0
     },
     {
-        "nume": "Inteligentă artificiala",
+        "nume": "Inteligenta artificiala",
         "cod": 20,
         "este_optionala": 0
     },
@@ -30,12 +30,12 @@
         "este_optionala": 1
     },
     {
-        "nume": "Invătare automată",
+        "nume": "Invatare automata",
         "cod": 22,
         "este_optionala": 0
     },
     {
-        "nume": "Dezvoltare de programe bazată pe verificare",
+        "nume": "Dezvoltare de programe bazata pe verificare",
         "cod": 23,
         "este_optionala": 1
     },
