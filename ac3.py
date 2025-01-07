@@ -1,8 +1,7 @@
-import random
 import json
-import time as t
 import copy
 from flask import Flask, render_template, url_for
+app = Flask(__name__)
 
 restrictions = []
 duringConstructionRestrictions = []
@@ -262,9 +261,9 @@ def backtracking(assignment, variable_domains):
         # remove assignment
         del assignment[Xi]
 
-    return None  # Failure
+    return None  # failure
 
-# Solve the CSP using backtracking with AC-3
+# solve the CSP using backtracking with AC-3
 assignment = {}
 solution = backtracking(assignment, variable_domains)
 
@@ -280,63 +279,8 @@ else:
         print(f"  Assigned to Professor {prof_i}, Time {time_i}, Room {room_i}")
     print()
 
-# Optionally, you can compare with the original backtracking without AC-3
-# For comparison purposes, you can implement the original backtracking function without AC-3 and measure the time or steps required to find a solution.
-
-# Example of comparison code (simplified):
-
-import time
-
-def backtracking_without_AC3(assignment):
-    if len(assignment) == len(class_list):
-        # All variables assigned
-        return assignment
-
-    # Select unassigned variable Xi (using MRV heuristic)
-    unassigned_vars = [Xi for Xi in range(len(class_list)) if Xi not in assignment]
-    Xi = min(unassigned_vars, key=lambda var: len(variable_domains_preAC3[var]))
-
-    # For each value in variable_domains_preAC3[Xi]:
-    domain_Xi = variable_domains_preAC3[Xi]
-
-    for value in domain_Xi:
-        consistent = True
-        # Check consistency with assignment
-        for Xj in assignment:
-            if not is_consistent(value, assignment[Xj], class_list[Xi], class_list[Xj]):
-                consistent = False
-                break
-        if consistent:
-            assignment[Xi] = value
-            result = backtracking_without_AC3(assignment)
-            if result is not None:
-                return result
-            del assignment[Xi]
-
-    return None  # Failure
-
-# Measure time for backtracking without AC-3
-start_time = time.time()
-assignment = {}
-solution_no_AC3 = backtracking_without_AC3(assignment)
-end_time = time.time()
-time_no_AC3 = end_time - start_time
-
-# Measure time for backtracking with AC-3
-start_time = time.time()
-assignment = {}
-solution_with_AC3 = backtracking({}, variable_domains)
-end_time = time.time()
-time_with_AC3 = end_time - start_time
-
-print(f"Time without AC-3: {time_no_AC3} seconds")
-print(f"Time with AC-3: {time_with_AC3} seconds")
-
-# Add this at the top of arc-consistency-implementation.py
-from flask import Flask, render_template
-app = Flask(__name__)
-
-# Modify the output section to store solution in the same format as main.py
+### FORMATTING
+# modifying the output section to store solution in the same format as main.py
 def format_solution(solution, class_list):
     formatted_timetable = {}
     for Xi in range(len(class_list)):
@@ -367,25 +311,24 @@ def transform_data(bestTimeTable, profesor_codes, time_codes, sala_codes, materi
             ora = time_codes[timeIndex]["ora"]
             interval = f"{ora[:2]}-{str(int(ora[:2]) + 2).zfill(2)}"  # ex: 08:00 -> "08-10"
             
-            # Formatează datele într-un rând structurat
+            # formatting data in a structured row
             row = {
                 "Interval": interval,
                 "Disciplina": materie_codes[materie]["nume"],
                 "Profesor": profesor,
                 "Sala": sala_codes[sala]["nume"],
-                "Tip": class_type # Poți adapta pentru frecvență dacă există informații suplimentare
+                "Tip": class_type
             }
-
-            # Inițializează ziua și grupa în `timetable_data`
+            # initializing day & group in timetable_data
             timetable_data.setdefault(grupa, {}).setdefault(zi, []).append(row)
 
-    # Sortează intervalele orare pentru fiecare zi și grupă
+    # sorts timetable for each day & group
     for grupa in timetable_data:
         for zi in timetable_data[grupa]:
             timetable_data[grupa][zi] = sorted(timetable_data[grupa][zi], key=lambda x: x["Interval"])
 
     return timetable_data
-# Replace existing output code with:
+# replace existing output code with:
 if solution:
     formatted_timetable = format_solution(solution, class_list)
     timetable_data = transform_data(formatted_timetable, profesor_codes, time_codes, sala_codes, materie_codes, group_codes)
