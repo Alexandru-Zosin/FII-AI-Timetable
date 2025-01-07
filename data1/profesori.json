@@ -1,0 +1,37 @@
+[
+    {
+        "cod": 2,
+        "numeProfesor": "Conf. dr. Vitcu Anca",
+        "materiiPredate": [16],
+        "nrMaximOre": 10,
+        "poatePredaCurs": true
+    },
+    {
+        "cod": 3,
+        "numeProfesor": "Drd. Olariu Florin",
+        "materiiPredate": [17],
+        "nrMaximOre": 10,
+        "poatePredaCurs": true
+    },
+    {
+        "cod": 4,
+        "numeProfesor": "Marculet Dan",
+        "materiiPredate": [18],
+        "nrMaximOre": 4,
+        "poatePredaCurs": false
+    },
+    {
+        "cod": 11,
+        "numeProfesor": "Lect. dr. Benchea Razvan",
+        "materiiPredate": [18],
+        "nrMaximOre": 4,
+        "poatePredaCurs": true
+    },
+    {
+        "cod": 24,
+        "numeProfesor": "Simionescu Cristian",
+        "materiiPredate": [18],
+        "nrMaximOre": 8,
+        "poatePredaCurs": false
+    }
+]

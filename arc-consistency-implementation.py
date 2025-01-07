@@ -2,10 +2,7 @@ import random
 import json
 import time as t
 import copy
-import cProfile
-import matplotlib.pyplot as plt
 from flask import Flask, render_template, url_for
-import pandas as pd
 
 restrictions = []
 duringConstructionRestrictions = []
@@ -23,7 +20,7 @@ profesor_codes = {profesor['cod']: profesor for profesor in loadedData['profesor
 materie_codes = {materie['cod']: materie for materie in loadedData['materii']}
 time_codes = {time['cod']: time for time in loadedData['timp']}
 
-# Initialize variables
+# initialize variables
 bestTimeTable = None
 bestTimeTableScore = 0
 currentTimetable = {}  # currentTimetable[profesorIndex][timeIndex] = (grupa, sala, materie)
@@ -31,7 +28,7 @@ profesor_hours = {}
 group_schedule = {}
 sala_schedule = {}
 
-# Build the list of classes to schedule
+# build the list of classes to schedule
 class_list = []
 
 for materie in loadedData['materii']:
@@ -70,12 +67,13 @@ for materie in loadedData['materii']:
             })
 
 # Define the initial domains for each variable (class)
-variable_domains = {}  # variable_domains[class_index] = list of possible assignments
+variable_domains = {}
 for class_index, cls in enumerate(class_list):
     variable_domains[class_index] = []
     materie = cls['materie']
     grupa = cls['grupa']
     class_type = cls['type']  # 'course' or 'seminar'
+    #  store all valid combinations of professor, time, and room for a given class.
 
     possible_professors = []
 
@@ -83,11 +81,15 @@ for class_index, cls in enumerate(class_list):
         if materie in profesor['materiiPredate']:
             profesorIndex = profesor['cod']
 
-            # Check if the professor can teach courses/seminars
+            # check if the professor can teach courses/seminars
             if class_type == 'course' and profesor['poatePredaCurs'] == 0:
                 continue
 
             possible_professors.append(profesorIndex)
+
+    # the constraints:
+    # room must support course/seminar(by default for seminar)
+    # room must be available at the given timeslot
 
     for profesorIndex in possible_professors:
         profesor = profesor_codes[profesorIndex]
@@ -96,75 +98,81 @@ for class_index, cls in enumerate(class_list):
             for sala in loadedData['sali']:
                 salaIndex = sala['cod']
                 is_course = (class_type == 'course')
-                if is_course and sala['curs_posibil'] != 1:
+                if is_course and sala['curs_posibil'] != 1:     
                     continue
                 if not is_course and sala['curs_posibil'] != 0:
                     continue
                 if timeIndex not in sala['timp_posibil']:
-                    continue  # Room is not available at this time
+                    continue  # room is not available at this time
 
-                # You can add additional constraints here if necessary
                 assignment = (profesorIndex, timeIndex, salaIndex)
                 variable_domains[class_index].append(assignment)
+                # domain of possible assignments for each class
+                # ## a list of valid combinations of (prof., time, room)
 
-# Define Neighbors for each variable
-Neighbors = {}  # Neighbors[Xi] = set of indices of neighboring variables
+# define neighbors(another variables with whom the first one interacts ~ restr.) for each variable(class)
+Neighbors = {}  # Neighbors[Xi(class)] = indices of neighboring variables
 for i in range(len(class_list)):
-    Neighbors[i] = set()
+    Neighbors[i] = set() # i is the index of  a class in class_list
 
 for i in range(len(class_list)):
     Xi = class_list[i]
     for j in range(len(class_list)):
         if i == j:
-            continue
+            continue # a class can t neighbour itself
         Xj = class_list[j]
 
-        # If they share the same group
+        # if they share the same group (#so they 'share' a constraint)
         if Xi['grupa'] == Xj['grupa']:
-            Neighbors[i].add(j)
+            Neighbors[i].add(j) # we ll check if they can both be scheduled without conflicts (e.g time)
             continue
 
-        # If they can possibly be assigned the same professor
+        # if they can possibly be assigned the same professor
         possible_professors_i = set(assignment[0] for assignment in variable_domains[i])
         possible_professors_j = set(assignment[0] for assignment in variable_domains[j])
         if possible_professors_i & possible_professors_j:
-            Neighbors[i].add(j)
+            Neighbors[i].add(j) # if possible professors overlap => neighbors
             continue
 
-        # If they can possibly be assigned the same room
+        # if they can possibly be assigned the same room
         possible_rooms_i = set(assignment[2] for assignment in variable_domains[i])
         possible_rooms_j = set(assignment[2] for assignment in variable_domains[j])
         if possible_rooms_i & possible_rooms_j:
             Neighbors[i].add(j)
             continue
 
-        # Course before seminar constraint
+        # course before seminar constraint
         if Xi['materie'] == Xj['materie'] and Xi['grupa'] == Xj['grupa']:
             if (Xi['type'] == 'course' and Xj['type'] == 'seminar') or (Xi['type'] == 'seminar' and Xj['type'] == 'course'):
                 Neighbors[i].add(j)
                 continue
 
-# Implement the AC-3 Algorithm
-def is_consistent(xi, xj, Xi, Xj):
-    prof_i, time_i, room_i = xi
-    prof_j, time_j, room_j = xj
+# neighbours aici arata astfel:
+# neighbours = {
+# 0 (class id 0) : {1, 2, ...} - vecin cu class id 1, class id 2, ... - legati de constrangeri
+# }
 
-    # If Xi and Xj share the same group
+# AC-3
+def is_consistent(xi, xj, Xi, Xj): # Xi Xj - variables (classes compared)
+    prof_i, time_i, room_i = xi # xi - specific assignments
+    prof_j, time_j, room_j = xj # xj
+
+    # Xi and Xj share the same group AND overlapping times => bad
     if Xi['grupa'] == Xj['grupa']:
         if time_i == time_j:
             return False
 
-    # If the professors are the same
+    # the professors are the same AND overlapping times
     if prof_i == prof_j:
         if time_i == time_j:
             return False
 
-    # If the rooms are the same
+    # the rooms are the same AND overlapping times 
     if room_i == room_j:
         if time_i == time_j:
             return False
 
-    # Course before seminar constraint
+    # course before seminar constraint
     if Xi['materie'] == Xj['materie'] and Xi['grupa'] == Xj['grupa']:
         if Xi['type'] == 'course' and Xj['type'] == 'seminar':
             if time_i >= time_j:
@@ -185,7 +193,7 @@ def remove_inconsistent_values(Xi, Xj, variable_domains):
         found = False
         for y in domain_xj:
             if is_consistent(x, y, class_list[Xi], class_list[Xj]):
-                found = True
+                found = True # exista macar un y pt x care satisface constrangerile
                 break
         if found:
             new_domain_xi.append(x)
@@ -204,13 +212,13 @@ def AC3(variable_domains):
         (Xi, Xj) = queue.pop(0)
         if remove_inconsistent_values(Xi, Xj, variable_domains):
             if len(variable_domains[Xi]) == 0:
-                return False  # Failure
+                return False  # a domain became empty, so we have a failure (no solution exists AT ALL)
             for Xk in Neighbors[Xi]:
                 if Xk != Xj:
-                    queue.append((Xk, Xi))
-    return True  # Success
+                    queue.append((Xk, Xi)) # Xi la dreapta, verf. toti neighb cu el
+    return True  # now all variables are arc consistent
 
-# Apply AC-3 Algorithm as Preprocessing
+# apply AC-3 algorithm as preprocessing
 variable_domains_preAC3 = copy.deepcopy(variable_domains)  # Keep a copy for comparison
 if not AC3(variable_domains):
     print("No solution possible after AC-3 preprocessing.")
@@ -221,40 +229,37 @@ else:
         print(f"Variable {Xi} ({cls['type']} of subject {cls['materie']} for group {cls['grupa']}):")
         domain = variable_domains[Xi]
         print(f"  Domain size: {len(domain)}")
-        # Uncomment the following lines to print the actual domain values
+        # domain values
         # for value in domain:
         #     prof_i, time_i, room_i = value
         #     print(f"    Professor {prof_i}, Time {time_i}, Room {room_i}")
     print()
 
-# Integrate AC-3 into Backtracking
+# integrate AC-3 into backtracking
 def backtracking(assignment, variable_domains):
     if len(assignment) == len(class_list):
-        # All variables assigned
         return assignment
 
-    # Select unassigned variable Xi (using MRV heuristic)
+    # select unassigned variable Xi (euristica MRV - domeniul cel mai restrans)
     unassigned_vars = [Xi for Xi in range(len(class_list)) if Xi not in assignment]
     Xi = min(unassigned_vars, key=lambda var: len(variable_domains[var]))
 
-    # For each value in variable_domains[Xi]:
-    domain_Xi = variable_domains[Xi]
-
-    for value in domain_Xi:
-        # Create a deep copy of variable_domains
+    domain_Xi = variable_domains[Xi] # lista de assignmenturi de tip (prof1, time1, sala1), (...)
+    for value in domain_Xi: # un assignment specific (profX, timeX, salaX)
+        # create copy of (original)variable_domains 
         new_variable_domains = copy.deepcopy(variable_domains)
+        # changes made to domain during one branch must not affect the others
 
-        assignment[Xi] = value
-
-        # Reduce the domain of Xi to [value]
+        assignment[Xi] = value # pt. class Xi lucram cu UN (prof, time, sala)
+        # reduce the domain of Xi to [value] - no need to consider other values for this branch of recrs
         new_variable_domains[Xi] = [value]
 
-        # Apply AC-3
+        # apply AC-3
         if AC3(new_variable_domains):
             result = backtracking(assignment, new_variable_domains)
             if result is not None:
                 return result
-        # Remove assignment
+        # remove assignment
         del assignment[Xi]
 
     return None  # Failure

@@ -1,0 +1,17 @@
+[
+    {
+        "nume": "Animatie 3D: algoritmi si tehnici fundamentale",
+        "cod": 16,
+        "este_optionala": 1
+    },
+    {
+        "nume": "Introducere in .NET",
+        "cod": 17,
+        "este_optionala": 1
+    },
+    {
+        "nume": "Retele neuronale",
+        "cod": 18,
+        "este_optionala": 1
+    }
+]

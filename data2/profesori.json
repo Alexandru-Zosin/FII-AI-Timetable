@@ -1,0 +1,23 @@
+[
+    {
+        "cod": 6,
+        "numeProfesor": "Prof. dr. Tiplea Ferucio Laurentiu",
+        "materiiPredate": [26],
+        "nrMaximOre": 10,
+        "poatePredaCurs": true
+    },
+    {
+        "cod": 20,
+        "numeProfesor": "Lect. dr. Nica Anca-Maria",
+        "materiiPredate": [26],
+        "nrMaximOre": 4,
+        "poatePredaCurs": true
+    },
+    {
+        "cod": 21,
+        "numeProfesor": "Asist. dr. Prelipcean Bogdan",
+        "materiiPredate": [26],
+        "nrMaximOre": 6,
+        "poatePredaCurs": true
+    }
+]

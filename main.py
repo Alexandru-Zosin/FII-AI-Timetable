@@ -3,9 +3,7 @@ import json
 import time as t
 import copy
 import cProfile
-import matplotlib.pyplot as plt
 from flask import Flask, render_template, url_for
-import pandas as pd
 restrictions = []
 duringConstructionRestrictions = []
 fileNames = ['grupe', 'materii', 'profesori', 'sali', 'timp', 'extraRestrictions']
@@ -280,7 +278,7 @@ def backtracking(class_index):
             if timeIndex in currentTimetable.get(profesorIndex, {}):
                 continue  # check if professor is already busy then in that timeslot
 
-            for sala in loadedData['sali']:
+            for sala in loadedData['sali']: # iterates over all possible classrooms
                 salaIndex = sala['cod']
                 is_course = (class_type == 'course')
                 if is_course and sala['curs_posibil'] != 1:
