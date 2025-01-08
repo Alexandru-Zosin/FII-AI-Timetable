@@ -109,7 +109,7 @@ def f3(currentTimetable):
         The code checks if the group is a main group (length of group_nume == 1 => course)
         or a sub-group (length > 1 => seminar).
       - This is somewhat simplified here: if a group tries to get the same subject
-        multiple times, it returns False.
+        multiple times, it returns Falses.
     """
     group_subject_course = {}
     group_subject_seminar = {}
