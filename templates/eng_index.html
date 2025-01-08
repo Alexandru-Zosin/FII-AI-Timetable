@@ -11,9 +11,9 @@
         <h1>Group Timetables</h1>
         <p>Select a group below to view its timetable:</p>
         <ul class="list-group">
-            {% for group in groups %}
+            {% for group_code in groups %}
             <li class="list-group-item">
-                <a href="{{ url_for('timetable', group=group) }}">Group {{ group }}</a>
+                <a href="{{ url_for('timetable', group_code=group_code) }}">Group {{ group_code }}</a>
             </li>
             {% endfor %}
         </ul>

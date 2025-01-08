@@ -5,41 +5,79 @@ import copy
 import cProfile
 from flask import Flask, render_template, url_for
 
-# Keep track of restrictions that are either verified after
-# the entire timetable is built (restrictions) or during the assignment
-# of each class (during_assignment_restrictions).
+"""
+Restrictions (MANDATORY):
+#  1) Mandatory subjects are assigned to each group.
+#  2) No overlapping classes for the same group at the same time.
+#  3) A teacher does not teach two classes at the same time.
+#  4) A room cannot have two classes at the same time.
+#  5) A course must be taught in a room that supports courses.
+#  6) Seminars must be in rooms that do NOT support courses.
+#  7) A professor cannot exceed max teaching hours.
+#  8) Courses must be scheduled before seminars for the same subject & group.
+"""
+
+# keeps track of restrictions (verf. after entire timetable is built or during)
 restrictions = []
 during_assignment_restrictions = []
 
-# JSON files loaded from the 'data' directory
+# JSON filenames loaded from the 'eng_data' directory
 file_names = ['groups', 'subjects', 'teachers', 'rooms', 'time_slots', 'extra_restrictions']
 loaded_data = {}
-
-# Loading data from JSON files
+# loading data from JSON files
 for file_name in file_names:
     with open(f'./eng_data/{file_name}.json', 'r') as file:
         read_data = json.load(file)
         loaded_data[file_name] = read_data
 
-# Lookup dictionaries for entities by their codes
-# Example: groups[301] gives all info about group 301 (name, language, code)
+# lookup dictionaries for entities accessed by codes
+# example: groups[301] gives all info about group 301 (name, language, code)
 groups = {group['code']: group for group in loaded_data['groups']}
 rooms = {room['code']: room for room in loaded_data['rooms']}
 teachers = {teacher['code']: teacher for teacher in loaded_data['teachers']}
 subjects = {subject['code']: subject for subject in loaded_data['subjects']}
 time_slots = {time['code']: time for time in loaded_data['time_slots']}
 
-# Initializing variables
 best_timetable = None
 best_timetable_score = 0
-# current_timetable[teacher_index][time_index] = (group, room, subject)
-current_timetable = {}
-# Keeps track of each teacher's assigned hours
-teacher_hours = {}
-# Keeps track of each group's schedule to detect overlapping classes
-group_schedule = {}
-# Keeps track of each room's schedule
-room_schedule = {}
+
+current_timetable = {}  # current_timetable[teacher_code][time_code] = (group_code, room_code, subject_code, class_type)
+teacher_schedule = {}  # which timeslots are occupied by each teacher
+group_schedule = {}  # which timeslots are occupied by each group -> detect overlapping classes
+room_schedule = {}  # which time slots are occupied by each room
+
+# builds the list of classes to schedule (courses & seminars)
+# a class is (GROUP_code + SUBJECT_code + class_TYPE(course/seminar))
+class_list = []
+for subject in loaded_data['subjects']:
+    if subject['is_optional'] == 0:  # mandatory subject
+        for group in loaded_data['groups']:
+            group_name = group['name']
+            if len(group_name) == 1:  # course group(all subgroups altogether)
+                class_list.append({
+                    'type': 'course',
+                    'subject_code': subject['code'],
+                    'group_code': group['code']
+                })
+            else:  # seminar group (each individual group)
+                class_list.append({
+                    'type': 'seminar',
+                    'subject_code': subject['code'],
+                    'group_code': group['code']
+                })
+    else:  # optional subject
+        main_groups = [group for group in loaded_data['groups'] if len(group['name']) == 1]
+        for group in main_groups:
+            class_list.append({
+                'type': 'course',
+                'subject_code': subject['code'],
+                'group_code': group['code']
+            })
+            class_list.append({
+                'type': 'seminar',
+                'subject_code': subject['code'],
+                'group_code': group['code']
+            })
 
 """
 # Define the restriction functions
@@ -127,159 +165,158 @@ def f7(current_timetable):
 # during_assignment_restrictions.append(f6)
 # during_assignment_restrictions.append(f4)
 # during_assignment_restrictions.append(f3)
-"""
 
 def is_timetable_valid():
     for restriction in restrictions:
         if not restriction(current_timetable):
             return False
     return True
+"""
 
+def add_to_timetable(teacher_code, time_code, group_code, room_code, subject_code, class_type):
+    """
+    Attempts to add a class (group_code, room_code, subject_code, class_type)
+    to current_timetable[teacher_code][time_code]. 
+    True if successful
+    1) verifies the group is not already in group_schedule at that time
+    2) verifies the room is free at the given timeslot
+    3) increments teacher_schedule[teacher_code]
+    """
+    # initialize teacher in timetable if needed
+    if teacher_code not in current_timetable:
+        current_timetable[teacher_code] = {}
 
-def add_to_timetable(teacher_index, time_index, group, room, subject, class_type):
-    # Initialize teacher's timetable
-    if teacher_index not in current_timetable:
-        current_timetable[teacher_index] = {}
-
-    # Check group schedule
-    if group not in group_schedule:
-        group_schedule[group] = set()
-    if time_index in group_schedule[group]:
+    # checks group schedule
+    if group_code not in group_schedule:
+        group_schedule[group_code] = set()
+    if time_code in group_schedule[group_code]:
         return False
 
-    # Check room schedule
-    if room not in room_schedule:
-        room_schedule[room] = set()
-    if time_index in room_schedule[room]:
+    # checks room schedule
+    if room_code not in room_schedule:
+        room_schedule[room_code] = set()
+    if time_code in room_schedule[room_code]:
         return False
 
-    # Assign class to timetable
-    current_timetable[teacher_index][time_index] = (group, room, subject, class_type)
-    teacher_hours[teacher_index] += 1
-    group_schedule[group].add(time_index)
-    room_schedule[room].add(time_index)
+    # assigns class to timetable
+    current_timetable[teacher_code][time_code] = (group_code, room_code, subject_code, class_type)
+    teacher_schedule[teacher_code] += 1
+    group_schedule[group_code].add(time_code)
+    room_schedule[room_code].add(time_code)
     return True
 
-
-def remove_from_timetable(teacher_index, time_index):
-    if teacher_index in current_timetable and time_index in current_timetable[teacher_index]:
-        group, room, subject, class_type = current_timetable[teacher_index][time_index]
-        del current_timetable[teacher_index][time_index]
-        teacher_hours[teacher_index] -= 1
-        group_schedule[group].remove(time_index)
-        room_schedule[room].remove(time_index)
-
-# Build the list of classes to schedule
-class_list = []
-for subject in loaded_data['subjects']:
-    if subject['is_optional'] == 0:  # Mandatory subject
-        for group in loaded_data['groups']:
-            group_name = group['name']
-            if len(group_name) == 1:  # Course group
-                class_list.append({
-                    'type': 'course',
-                    'subject': subject['code'],
-                    'group': group['code']
-                })
-            else:  # Seminar group
-                class_list.append({
-                    'type': 'seminar',
-                    'subject': subject['code'],
-                    'group': group['code']
-                })
-    else:  # Optional subject
-        main_groups = [group for group in loaded_data['groups'] if len(group['name']) == 1]
-        for group in main_groups:
-            class_list.append({
-                'type': 'course',
-                'subject': subject['code'],
-                'group': group['code']
-            })
-            class_list.append({
-                'type': 'seminar',
-                'subject': subject['code'],
-                'group': group['code']
-            })
+def remove_from_timetable(teacher_code, time_code):
+    """
+    Removes an assignment from the timetable and updates schedule structures
+    accordingly.
+    """
+    if teacher_code in current_timetable and time_code in current_timetable[teacher_code]:
+        group_code, room_code, _, _ = current_timetable[teacher_code][time_code]
+        del current_timetable[teacher_code][time_code]
+        teacher_schedule[teacher_code] -= 1
+        group_schedule[group_code].remove(time_code)
+        room_schedule[room_code].remove(time_code)
 
 bar_plot_values = []
 
+# we TRY to assign each class(group, subject, type) to a
+#                            (teacher, time_slot, room)
+# ensuring no overlapping constraints
 def backtracking(class_index):
     global best_timetable, best_timetable_score, bar_plot_values
 
-    if class_index == len(class_list):  # Base case
+    # base case: if we've processed all classes, success
+    if class_index == len(class_list):
         best_timetable = copy.deepcopy(current_timetable)
         return 1
 
     cls = class_list[class_index]
-    subject = cls['subject']
-    group = cls['group']
-    class_type = cls['type']  # 'course' or 'seminar'
+    subject_code = cls['subject_code']
+    group_code = cls['group_code']
+    class_type = cls['type']
+
+    # which teachers can teach this subject?
     possible_teachers = [
         teacher['code'] for teacher in loaded_data['teachers']
-        if subject in teacher['subjects_taught']
+        if subject_code in teacher['subjects_taught']
     ]
 
-    for teacher_index in possible_teachers:
-        if class_type == 'course' and not teachers[teacher_index]['can_teach_course']:
+    # WE TRY to assign each TEACHER in turn
+    for teacher_code in possible_teachers:
+        # if it's a course, we need to check if teacher is elligible
+        if class_type == 'course' and not teachers[teacher_code]['can_teach_course']:
             continue
+        
+        # we initialize teacher_schedule if it's not present
+        if teacher_code not in teacher_schedule:
+            teacher_schedule[teacher_code] = 0
 
-        if teacher_index not in teacher_hours:
-            teacher_hours[teacher_index] = 0
-
-        if teacher_hours[teacher_index] >= teachers[teacher_index]['max_hours']:
+        # we check that teacher is below his maximum hours
+        if teacher_schedule[teacher_code] >= teachers[teacher_code]['max_hours']:
             continue
-
+        
+        # WE TRY each possible TIMESLOT
         for time in loaded_data['time_slots']:
-            time_index = time['code']
-            if time_index in group_schedule.get(group, set()):
+            time_code = time['code']
+            
+            # if the group is already busy, we skip
+            if time_code in group_schedule.get(group_code, set()):
+                continue
+            
+            # if the teacher is already busy, we skip
+            if time_code in current_timetable.get(teacher_code, {}):
                 continue
 
-            if time_index in current_timetable.get(teacher_index, {}):
-                continue
-
+            # WE TRY each possible ROOM
             for room in loaded_data['rooms']:
-                room_index = room['code']
+                room_code = room['code']
                 is_course = (class_type == 'course')
+
+                # if the room doesn't allow courses, we skip
                 if is_course and not room['course_possible']:
                     continue
-                if time_index not in room['possible_times']:
+                
+                # if the room is not available at this timeslot, we skip
+                if time_code not in room['possible_times']:
                     continue
 
-                if add_to_timetable(teacher_index, time_index, group, room_index, subject, class_type):
+                # attempt to assign
+                if add_to_timetable(teacher_code, time_code, group_code, room_code, subject_code, class_type):
                     return_value = backtracking(class_index + 1)
                     if return_value == 1:
                         return 1
-                    remove_from_timetable(teacher_index, time_index)
+                    # if not successful, we remove the assignment
+                    remove_from_timetable(teacher_code, time_code)
 
+# starting the backtracking from class_index = 0 (first one)
 backtracking(0)
 
-# Transform the final timetable into a structured format for the UI
+# transforming the final timetable into a structured format for the UI
 def transform_data(best_timetable):
     timetable_data = {}
-    for teacher_index, schedule in best_timetable.items():
-        teacher = teachers[teacher_index]["name"]
-        for time_index, details in schedule.items():
-            group, room, subject, class_type = details
-            day = time_slots[time_index]["day"]
-            hour = time_slots[time_index]["hour"]
+    for teacher_code, schedule in best_timetable.items():
+        teacher = teachers[teacher_code]["name"]
+        for time_code, details in schedule.items():
+            group_code, room_code, subject_code, class_type = details
+            day = time_slots[time_code]["day"]
+            hour = time_slots[time_code]["hour"]
             interval = f"{hour[:2]}-{str(int(hour[:2]) + 2).zfill(2)}"
 
             row = {
                 "Interval": interval,
-                "Subject": subjects[subject]["name"],
+                "Subject": subjects[subject_code]["name"],
                 "Teacher": teacher,
-                "Room": rooms[room]["name"],
+                "Room": rooms[room_code]["name"],
                 "Type": class_type
             }
 
-            timetable_data.setdefault(group, {}).setdefault(day, []).append(row)
+            timetable_data.setdefault(group_code, {}).setdefault(day, []).append(row)
 
-    for group in timetable_data:
-        for day in timetable_data[group]:
-            timetable_data[group][day] = sorted(timetable_data[group][day], key=lambda x: x["Interval"])
+    for group_code in timetable_data:
+        for day in timetable_data[group_code]:
+            timetable_data[group_code][day] = sorted(timetable_data[group_code][day], key=lambda x: x["Interval"])
 
     return timetable_data
-
 
 transformed_timetable = transform_data(best_timetable)
 
@@ -290,12 +327,12 @@ def index():
     groups = transformed_timetable.keys()
     return render_template('eng_index.html', groups=groups)
 
-@app.route('/timetable/<int:group>')
-def timetable(group):
-    if group not in transformed_timetable:
+@app.route('/timetable/<int:group_code>')
+def timetable(group_code):
+    if group_code not in transformed_timetable:
         return "Timetable for this group is not available.", 404
 
-    data = transformed_timetable[group]
-    return render_template('eng_timetable.html', group=group, timetable_data=data)
+    data = transformed_timetable[group_code]
+    return render_template('eng_timetable.html', group=group_code, timetable_data=data)
 
 app.run(debug=True)
