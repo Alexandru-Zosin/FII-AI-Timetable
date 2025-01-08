@@ -9,8 +9,8 @@ from string import punctuation # globally available constant (pre-defined string
 import random
 
 # required NLTK resources
-nltk.download('punkt') # tokenizer model for splitting into word & sentences
-nltk.download('averaged_perceptron_tagger') # identifies nouns, verbs, adjectives
+nltk.download('punkt_tab') # tokenizer model for splitting into word & sentences
+nltk.download('averaged_perceptron_tagger_eng') # identifies nouns, verbs, adjectives
 nltk.download('wordnet') # large database of english that organizes words into synsets
 nltk.download('stopwords') # common words (language-specific words) not useful in NLP tasks (e.g.: are, is...) 
                            # => irrelevant words do not appear as keywords/replacements
@@ -109,6 +109,7 @@ def detect_language(text, language_models): #argmax for Y (which language)
     if scores:
         return max(scores.items(), key=lambda x: x[1])[0] # comprs. on avg.prob(x[1]) to extract lng.([0])
     return "Unknown"
+    
 
 def get_stylometric_info(text):
     # tokenize text
@@ -121,10 +122,11 @@ def get_stylometric_info(text):
     # words frequency
     word_freq = {}
     for word in words:
-        if word in word_freq:
-            word_freq[word] += 1
-        else:
-            word_freq[word] = 1
+        if len(word) > 2:
+            if word in word_freq:
+                word_freq[word] += 1
+            else:
+                word_freq[word] = 1
     
     # average word length
     avg_word_length = 0
@@ -203,7 +205,7 @@ def extract_keywords(text, detectedLanguage = 'english'):
     stop_words = set(stopwords.words(detectedLanguage))
     stop_words.update(punctuation) #adds punctuation symbols (INDIVIDUALLY) to the sets to be ignored,
                                     #as punctuation string is iterable
-    
+
     # extract potential keywords (nouns and important verbs)
     keywords = []
     for word, tag in tagged:
