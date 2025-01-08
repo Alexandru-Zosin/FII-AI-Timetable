@@ -1,0 +1,152 @@
+[
+    {
+        "day": "Monday",
+        "hour": "08:00",
+        "code": 1
+    },
+    {
+        "day": "Monday",
+        "hour": "10:00",
+        "code": 2
+    },
+    {
+        "day": "Monday",
+        "hour": "12:00",
+        "code": 3
+    },
+    {
+        "day": "Monday",
+        "hour": "14:00",
+        "code": 4
+    },
+    {
+        "day": "Monday",
+        "hour": "16:00",
+        "code": 5
+    },
+    {
+        "day": "Monday",
+        "hour": "18:00",
+        "code": 6
+    },
+    {
+        "day": "Tuesday",
+        "hour": "08:00",
+        "code": 7
+    },
+    {
+        "day": "Tuesday",
+        "hour": "10:00",
+        "code": 8
+    },
+    {
+        "day": "Tuesday",
+        "hour": "12:00",
+        "code": 9
+    },
+    {
+        "day": "Tuesday",
+        "hour": "14:00",
+        "code": 10
+    },
+    {
+        "day": "Tuesday",
+        "hour": "16:00",
+        "code": 11
+    },
+    {
+        "day": "Tuesday",
+        "hour": "18:00",
+        "code": 12
+    },
+    {
+        "day": "Wednesday",
+        "hour": "08:00",
+        "code": 13
+    },
+    {
+        "day": "Wednesday",
+        "hour": "10:00",
+        "code": 14
+    },
+    {
+        "day": "Wednesday",
+        "hour": "12:00",
+        "code": 15
+    },
+    {
+        "day": "Wednesday",
+        "hour": "14:00",
+        "code": 16
+    },
+    {
+        "day": "Wednesday",
+        "hour": "16:00",
+        "code": 17
+    },
+    {
+        "day": "Wednesday",
+        "hour": "18:00",
+        "code": 18
+    },
+    {
+        "day": "Thursday",
+        "hour": "08:00",
+        "code": 19
+    },
+    {
+        "day": "Thursday",
+        "hour": "10:00",
+        "code": 20
+    },
+    {
+        "day": "Thursday",
+        "hour": "12:00",
+        "code": 21
+    },
+    {
+        "day": "Thursday",
+        "hour": "14:00",
+        "code": 22
+    },
+    {
+        "day": "Thursday",
+        "hour": "16:00",
+        "code": 23
+    },
+    {
+        "day": "Thursday",
+        "hour": "18:00",
+        "code": 24
+    },
+    {
+        "day": "Friday",
+        "hour": "08:00",
+        "code": 25
+    },
+    {
+        "day": "Friday",
+        "hour": "10:00",
+        "code": 26
+    },
+    {
+        "day": "Friday",
+        "hour": "12:00",
+        "code": 27
+    },
+    {
+        "day": "Friday",
+        "hour": "14:00",
+        "code": 28
+    },
+    {
+        "day": "Friday",
+        "hour": "16:00",
+        "code": 29
+    },
+    {
+        "day": "Friday",
+        "hour": "18:00",
+        "code": 30
+    }
+]

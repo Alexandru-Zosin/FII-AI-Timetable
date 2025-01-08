@@ -1,0 +1,57 @@
+[
+    {
+        "name": "Animatie 3D: algoritmi si tehnici fundamentale",
+        "code": 16,
+        "is_optional": 1
+    },
+    {
+        "name": "Introducere in .NET",
+        "code": 17,
+        "is_optional": 1
+    },
+    {
+        "name": "Retele neuronale",
+        "code": 18,
+        "is_optional": 1
+    },
+    {
+        "name": "Programare in Python",
+        "code": 19,
+        "is_optional": 0
+    },
+    {
+        "name": "Inteligenta artificiala",
+        "code": 20,
+        "is_optional": 0
+    },
+    {
+        "name": "Tehnici de programare multiprocesor",
+        "code": 21,
+        "is_optional": 1
+    },
+    {
+        "name": "Invatare automata",
+        "code": 22,
+        "is_optional": 0
+    },
+    {
+        "name": "Dezvoltare de programe bazata pe verificare",
+        "code": 23,
+        "is_optional": 1
+    },
+    {
+        "name": "Capitole speciale de sisteme de operare",
+        "code": 24,
+        "is_optional": 1
+    },
+    {
+        "name": "Dezvoltarea sistemelor fizice utilizand microprocesoare",
+        "code": 25,
+        "is_optional": 1
+    },
+    {
+        "name": "Securitatea informatiei",
+        "code": 26,
+        "is_optional": 0
+    }
+]

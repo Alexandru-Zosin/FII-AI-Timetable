@@ -1,0 +1,77 @@
+[
+    {
+        "name": "A",
+        "language": "Romanian",
+        "code": 1
+    },
+    {
+        "name": "B",
+        "language": "Romanian",
+        "code": 2
+    },
+    {
+        "name": "E",
+        "language": "English",
+        "code": 3
+    },
+    {
+        "name": "A1",
+        "language": "Romanian",
+        "code": 101
+    },
+    {
+        "name": "A2",
+        "language": "Romanian",
+        "code": 102
+    },
+    {
+        "name": "A3",
+        "language": "Romanian",
+        "code": 103
+    },
+    {
+        "name": "A4",
+        "language": "Romanian",
+        "code": 104
+    },
+    {
+        "name": "A5",
+        "language": "Romanian",
+        "code": 105
+    },
+    {
+        "name": "B1",
+        "language": "Romanian",
+        "code": 201
+    },
+    {
+        "name": "B2",
+        "language": "Romanian",
+        "code": 202
+    },
+    {
+        "name": "B3",
+        "language": "Romanian",
+        "code": 203
+    },
+    {
+        "name": "B4",
+        "language": "Romanian",
+        "code": 204
+    },
+    {
+        "name": "E1",
+        "language": "English",
+        "code": 301
+    },
+    {
+        "name": "E2",
+        "language": "English",
+        "code": 302
+    },
+    {
+        "name": "E3",
+        "language": "English",
+        "code": 303
+    }
+]

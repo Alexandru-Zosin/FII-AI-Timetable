@@ -1,0 +1,211 @@
+[
+    {
+        "code": 2,
+        "name": "Conf. dr. Vitcu Anca",
+        "subjects_taught": [
+            16
+        ],
+        "max_hours": 10,
+        "can_teach_course": true
+    },
+    {
+        "code": 3,
+        "name": "Drd. Olariu Florin",
+        "subjects_taught": [
+            17
+        ],
+        "max_hours": 10,
+        "can_teach_course": true
+    },
+    {
+        "code": 4,
+        "name": "Marculet Dan",
+        "subjects_taught": [
+            18
+        ],
+        "max_hours": 4,
+        "can_teach_course": false
+    },
+    {
+        "code": 5,
+        "name": "Conf. dr. Gavrilut Dragos",
+        "subjects_taught": [
+            19
+        ],
+        "max_hours": 6,
+        "can_teach_course": true
+    },
+    {
+        "code": 6,
+        "name": "Prof. dr. Tiplea Ferucio Laurentiu",
+        "subjects_taught": [
+            26
+        ],
+        "max_hours": 6,
+        "can_teach_course": true
+    },
+    {
+        "code": 7,
+        "name": "Lect. dr. Pistol Ionut Cristian",
+        "subjects_taught": [
+            20
+        ],
+        "max_hours": 6,
+        "can_teach_course": true
+    },
+    {
+        "code": 8,
+        "name": "Conf. dr. Raschip Madalina",
+        "subjects_taught": [
+            20
+        ],
+        "max_hours": 6,
+        "can_teach_course": true
+    },
+    {
+        "code": 9,
+        "name": "Conf. dr. Trandabat Diana",
+        "subjects_taught": [
+            20
+        ],
+        "max_hours": 4,
+        "can_teach_course": true
+    },
+    {
+        "code": 10,
+        "name": "Colab. Lupascu Marilena",
+        "subjects_taught": [
+            19
+        ],
+        "max_hours": 4,
+        "can_teach_course": false
+    },
+    {
+        "code": 11,
+        "name": "Lect. dr. Benchea Razvan",
+        "subjects_taught": [
+            18
+        ],
+        "max_hours": 4,
+        "can_teach_course": true
+    },
+    {
+        "code": 12,
+        "name": "Conf. dr. Ciortuz Liviu",
+        "subjects_taught": [
+            22
+        ],
+        "max_hours": 4,
+        "can_teach_course": true
+    },
+    {
+        "code": 13,
+        "name": "Lect. dr. Vidrascu Cristian",
+        "subjects_taught": [
+            24
+        ],
+        "max_hours": 10,
+        "can_teach_course": true
+    },
+    {
+        "code": 14,
+        "name": "Conf. dr. Onica Emanuel",
+        "subjects_taught": [
+            21
+        ],
+        "max_hours": 6,
+        "can_teach_course": true
+    },
+    {
+        "code": 16,
+        "name": "Asist. dr. Craciun Vlad",
+        "subjects_taught": [
+            19,
+            23
+        ],
+        "max_hours": 8,
+        "can_teach_course": true
+    },
+    {
+        "code": 17,
+        "name": "Conf. dr. Ciobaca Stefan",
+        "subjects_taught": [
+            23
+        ],
+        "max_hours": 4,
+        "can_teach_course": true
+    },
+    {
+        "code": 18,
+        "name": "Colab. Pantiru Stefan",
+        "subjects_taught": [
+            22
+        ],
+        "max_hours": 6,
+        "can_teach_course": true
+    },
+    {
+        "code": 19,
+        "name": "Peterca Adrian",
+        "subjects_taught": [
+            19
+        ],
+        "max_hours": 4,
+        "can_teach_course": false
+    },
+    {
+        "code": 20,
+        "name": "Lect. dr. Nica Anca-Maria",
+        "subjects_taught": [
+            26
+        ],
+        "max_hours": 4,
+        "can_teach_course": true
+    },
+    {
+        "code": 21,
+        "name": "Asist. dr. Prelipcean Bogdan",
+        "subjects_taught": [
+            26
+        ],
+        "max_hours": 6,
+        "can_teach_course": true
+    },
+    {
+        "code": 22,
+        "name": "Colab. Ciobanu Sebastian",
+        "subjects_taught": [
+            22
+        ],
+        "max_hours": 4,
+        "can_teach_course": true
+    },
+    {
+        "code": 23,
+        "name": "Lect. dr. Varlan Cosmin",
+        "subjects_taught": [
+            25
+        ],
+        "max_hours": 10,
+        "can_teach_course": true
+    },
+    {
+        "code": 24,
+        "name": "Simionescu Cristian",
+        "subjects_taught": [
+            18,
+            22
+        ],
+        "max_hours": 8,
+        "can_teach_course": false
+    },
+    {
+        "code": 26,
+        "name": "Lect. dr. Diac Paul",
+        "subjects_taught": [
+            21
+        ],
+        "max_hours": 6,
+        "can_teach_course": true
+    }
+]
