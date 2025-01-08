@@ -220,7 +220,7 @@ def remove_from_timetable(teacher_code, time_code):
 bar_plot_values = []
 
 # we TRY to assign each class(group, subject, type) to a
-#                            (teacher, time_slot, room)
+#                            (TEACHER, TIMESLOT, ROOM)
 # ensuring no overlapping constraints
 def backtracking(class_index):
     global best_timetable, best_timetable_score, bar_plot_values
