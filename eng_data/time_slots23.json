@@ -91,11 +91,6 @@
     },
     {
         "day": "Friday",
-        "hour": "14:00",
-        "code": 19
-    },
-    {
-        "day": "Friday",
         "hour": "18:00",
         "code": 20
     }
